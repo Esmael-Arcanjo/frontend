@@ -1,33 +1,20 @@
-
 import axios from "axios";
 
-const base = process.env.REACT_APP_BACKEND_URL;
-const TOKEN_KEY = "mp_access_token";
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+export const API = `${BACKEND_URL}/api`;
 
-export const api = axios.create({
-  baseURL: `${base}/api`,
-  withCredentials: true,
-});
+export const api = axios.create({ baseURL: API, withCredentials: true });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem(TOKEN_KEY);
+export function apiError(detail) {
+  if (detail == null) return "Something went wrong. Please try again.";
+  if (typeof detail === "string") return detail;
+  if (detail?.error?.message) return detail.error.message;
+  if (Array.isArray(detail))
+    return detail.map((e) => (e && typeof e.msg === "string" ? e.msg : JSON.stringify(e))).join(" ");
+  if (detail && typeof detail.msg === "string") return detail.msg;
+  return String(detail);
+}
 
-  if (token) {
-    config.headers = config.headers ?? {};
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-});
-
-export const errMsg = (e) =>
-  e?.response?.data?.error?.message ||
-  e?.response?.data?.detail ||
-  e?.message ||
-  "Erro";
-
-export const money = (cents, currency = "BRL") =>
-  new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency,
-  }).format((cents || 0) / 100);
+export function errMsg(e) {
+  return apiError(e?.response?.data?.detail || e?.response?.data) || e?.message;
+}
