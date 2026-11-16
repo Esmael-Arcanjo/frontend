@@ -22,7 +22,6 @@ const Hero = () => (
     <img src="/images/hero.jpg" alt="" className="absolute inset-0 -z-10 h-full w-full object-cover" />
     <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/65 to-black/30" />
     <div className="mx-auto w-full max-w-7xl px-4 py-24 text-white sm:px-6 lg:py-36">
-      <span className="fade-up inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-medium backdrop-blur">LEAMSE · Software para empresas</span>
       <h1 className="fade-up mt-6 max-w-4xl font-display text-4xl font-extrabold leading-[1.05] sm:text-5xl lg:text-6xl" style={{ animationDelay: "80ms" }}>
         Tecnologia que trabalha <span className="text-accent">no ritmo da sua empresa.</span>
       </h1>
@@ -30,7 +29,7 @@ const Hero = () => (
         A LEAMSE desenvolve soluções digitais independentes para empresas e profissionais: você contrata apenas o que precisa e recebe tudo configurado para o seu mercado.
       </p>
       <div className="fade-up mt-10 flex flex-wrap gap-3" style={{ animationDelay: "240ms" }}>
-        <Button asChild size="lg" className="rounded-full"><Link to="/empresas#sobre" data-testid="hero-cta-about">Conheça a LEAMSE <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
+        <Button asChild size="lg" className="rounded-full"><Link to="/empresas#sobre" data-testid="hero-cta-about">Conheça a Leamse <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
         <Button asChild size="lg" variant="outline" className="rounded-full border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white">
           <Link to="/precos" data-testid="hero-cta-pricing">Ver preços</Link>
         </Button>
