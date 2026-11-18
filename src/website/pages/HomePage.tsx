@@ -23,7 +23,7 @@ const Hero = () => (
     <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/65 to-black/30" />
     <div className="mx-auto w-full max-w-7xl px-4 py-24 text-white sm:px-6 lg:py-36">
       <h1 className="fade-up mt-6 max-w-4xl font-display text-4xl font-extrabold leading-[1.05] sm:text-5xl lg:text-6xl" style={{ animationDelay: "80ms" }}>
-        Tecnologia que trabalha <span className="text-accent">no ritmo da sua empresa.</span>
+        Tecnologia que trabalha <span className="text-accent">no Ritmo da sua empresa.</span>
       </h1>
       <p className="fade-up mt-6 max-w-xl text-base text-white/80 md:text-lg" style={{ animationDelay: "160ms" }}>
         A LEAMSE desenvolve soluções digitais independentes para empresas e profissionais: você contrata apenas o que precisa e recebe tudo configurado para o seu mercado.
