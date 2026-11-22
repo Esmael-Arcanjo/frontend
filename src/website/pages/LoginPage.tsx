@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/shared/components/PasswordInput";
 import { Label } from "@/components/ui/label";
 import { errMsg } from "@/shared/api/client";
 import { useAuth } from "@/shared/auth/AuthContext";
@@ -49,7 +50,7 @@ export default function LoginPage() {
             <div className="space-y-2"><Label htmlFor="email">E-mail</Label>
               <Input id="email" type="email" autoComplete="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} data-testid="login-email" /></div>
             <div className="space-y-2"><Label htmlFor="password">Senha</Label>
-              <Input id="password" type="password" autoComplete="current-password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} data-testid="login-password" /></div>
+              <PasswordInput id="password" autoComplete="current-password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} data-testid="login-password" /></div>
           </>
         )}
         <Button type="submit" disabled={busy} className="w-full rounded-full" data-testid="login-submit">{busy ? "Entrando..." : mfaToken ? "Verificar" : "Entrar"}</Button>

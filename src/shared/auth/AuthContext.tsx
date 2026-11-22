@@ -1,10 +1,11 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
-import { api, hasSession } from "@/shared/api/client";
+import { api, hasSession, markSession } from "@/shared/api/client";
 
 export type User = {
   id: string; name: string; email: string; email_verified: boolean; mfa_enabled: boolean;
   phone: string | null; locale: string; timezone: string;
   notification_prefs: { email_billing: boolean; email_security: boolean; email_product: boolean };
+  document?: string | null; is_admin?: boolean;
 };
 
 type LoginResult = { mfa_required: boolean; mfa_token?: string };
@@ -14,7 +15,7 @@ type AuthValue = {
   reload: () => Promise<void>;
   login: (email: string, password: string) => Promise<LoginResult>;
   loginMfa: (mfa_token: string, code: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string, document: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -29,7 +30,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const { data } = await api.get("/api/v1/auth/me");
       setUser(data.user);
+      markSession(true);
     } catch {
+      markSession(false);
       setUser(null);
     } finally {
       setLoading(false);
@@ -40,19 +43,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     const { data } = await api.post("/api/v1/auth/login", { email, password });
-    if (!data.mfa_required) setUser(data.user);
+    if (!data.mfa_required) { markSession(true); setUser(data.user); }
     return data;
   };
   const loginMfa = async (mfa_token: string, code: string) => {
     const { data } = await api.post("/api/v1/auth/login/mfa", { mfa_token, code });
+    markSession(true);
     setUser(data.user);
   };
-  const register = async (name: string, email: string, password: string) => {
-    const { data } = await api.post("/api/v1/auth/register", { name, email, password });
+  const register = async (name: string, email: string, password: string, document: string) => {
+    const { data } = await api.post("/api/v1/auth/register", { name, email, password, document });
+    markSession(true);
     setUser(data.user);
   };
   const logout = async () => {
-    try { await api.post("/api/v1/auth/logout"); } finally { setUser(null); }
+    try { await api.post("/api/v1/auth/logout"); } finally { markSession(false); setUser(null); }
   };
 
   return (

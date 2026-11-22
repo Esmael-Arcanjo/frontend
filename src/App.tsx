@@ -20,9 +20,11 @@ import SegmentPage from "@/website/pages/SegmentPage";
 import SecurityPage from "@/website/pages/SecurityPage";
 import CompanyPage from "@/website/pages/CompanyPage";
 import PricingPage from "@/website/pages/PricingPage";
+import ContactPage from "@/website/pages/ContactPage";
 
 // Each product dashboard is an independent bundle (code-split) mounted on its own address.
 const CrmApp = lazy(() => import("@/products/crm/CrmApp"));
+const AdminApp = lazy(() => import("@/admin/AdminApp"));
 const ErpApp = lazy(() => import("@/products/erp/ErpApp"));
 const EmailApiApp = lazy(() => import("@/products/email_api/EmailApiApp"));
 const PaymentsApiApp = lazy(() => import("@/products/payments_api/PaymentsApiApp"));
@@ -53,6 +55,7 @@ export default function App() {
             <Route path="/redefinir-senha" element={<ResetPasswordPage />} />
             <Route path="/convite" element={<AcceptInvitePage />} />
             <Route path="/minha-conta" element={<AccountPage />} />
+            <Route path="/admin/*" element={<AdminApp />} />
             <Route path="/crm/*" element={<CrmApp />} />
             <Route path="/erp/*" element={<ErpApp />} />
             <Route path="/email-api/*" element={<EmailApiApp />} />
@@ -67,7 +70,10 @@ export default function App() {
             <Route path="/b/:handle" element={<PublicBioPage />} />
             <Route path="/segmentos/:key" element={<SegmentPage />} />
             <Route path="/seguranca" element={<SecurityPage />} />
+            <Route path="/seguranca/:topic" element={<SecurityPage />} />
             <Route path="/empresas" element={<CompanyPage />} />
+            <Route path="/empresas/:topic" element={<CompanyPage />} />
+            <Route path="/contato" element={<ContactPage />} />
             <Route path="/precos" element={<PricingPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

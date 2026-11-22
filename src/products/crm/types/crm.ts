@@ -3,6 +3,7 @@ export type Lead = Base & {
   name: string; email: string | null; phone: string | null; company: string | null; source: string | null;
   status: "new" | "contacted" | "qualified" | "lost" | "converted"; value_cents: number; notes: string | null;
   custom_fields: Record<string, string | number | boolean | null>;
+  city?: string | null; intent?: "anunciar" | "comprar" | "contato" | null; wants?: string | null; price?: string | null; published?: boolean;
 };
 export type Contact = Base & { name: string; email: string | null; phone: string | null; company: string | null; position: string | null; notes: string | null; tags: string[] };
 export type Opportunity = Base & { title: string; contact_id: string | null; value_cents: number; stage_key: string; status: "open" | "won" | "lost"; expected_close_date: string | null; notes: string | null };

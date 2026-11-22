@@ -17,6 +17,9 @@ import SecurityPage from "./pages/SecurityPage";
 import SessionsPage from "./pages/SessionsPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import HelpPage from "./pages/HelpPage";
+import ConversationsPage from "./pages/ConversationsPage";
+import WhatsAppPage from "./pages/WhatsAppPage";
+import SiteIntegrationPage from "./pages/SiteIntegrationPage";
 
 export default function CrmApp() {
   return (
@@ -26,6 +29,9 @@ export default function CrmApp() {
           <Route index element={<DashboardPage />} />
           <Route path="leads" element={<LeadsPage />} />
           <Route path="contatos" element={<ContactsPage />} />
+          <Route path="conversas" element={<ConversationsPage />} />
+          <Route path="integracoes/whatsapp" element={<WhatsAppPage />} />
+          <Route path="integracoes/site" element={<SiteIntegrationPage />} />
           <Route path="oportunidades" element={<OpportunitiesPage />} />
           <Route path="atividades" element={<ActivitiesPage />} />
           <Route path="funil" element={<PipelinePage />} />

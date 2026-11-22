@@ -50,7 +50,7 @@ export const LeadFormDialog = ({ open, lead, config, onClose, onSaved }: Props) 
           <Field label="Telefone" htmlFor="l-phone"><Input id="l-phone" value={form.phone} onChange={set("phone")} data-testid="lead-phone-input" /></Field>
           <Field label="Origem" htmlFor="l-source">
             <NativeSelect id="l-source" value={form.source} onChange={set("source")} data-testid="lead-source-select">
-              <option value="">—</option>{config.sources.map((s) => <option key={s} value={s}>{s}</option>)}
+              <option value="">—</option>{[["manual", "Manual"], ["site", "Site"], ["whatsapp", "WhatsApp"], ["instagram", "Instagram"]].map(([k, v]) => <option key={k} value={k}>{v}</option>)}
             </NativeSelect>
           </Field>
           <Field label="Status" htmlFor="l-status">

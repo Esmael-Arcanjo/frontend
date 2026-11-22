@@ -5,6 +5,7 @@ import { api, errMsg } from "@/shared/api/client";
 import { useAuth } from "@/shared/auth/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/shared/components/PasswordInput";
 import { Label } from "@/components/ui/label";
 
 const PasswordCard = () => {
@@ -23,9 +24,9 @@ const PasswordCard = () => {
     <form onSubmit={submit} className="space-y-4 rounded-xl border border-border bg-card p-6" data-testid="security-password-form">
       <h2 className="font-display text-base font-bold">Alterar senha</h2>
       <div className="space-y-2"><Label htmlFor="sp-cur">Senha atual</Label>
-        <Input id="sp-cur" type="password" autoComplete="current-password" value={form.current_password} onChange={(e) => setForm({ ...form, current_password: e.target.value })} data-testid="security-current-password" /></div>
+        <PasswordInput id="sp-cur" autoComplete="current-password" value={form.current_password} onChange={(e) => setForm({ ...form, current_password: e.target.value })} data-testid="security-current-password" /></div>
       <div className="space-y-2"><Label htmlFor="sp-new">Nova senha</Label>
-        <Input id="sp-new" type="password" autoComplete="new-password" value={form.new_password} onChange={(e) => setForm({ ...form, new_password: e.target.value })} data-testid="security-new-password" />
+        <PasswordInput id="sp-new" autoComplete="new-password" value={form.new_password} onChange={(e) => setForm({ ...form, new_password: e.target.value })} data-testid="security-new-password" />
         <p className="text-xs text-muted-foreground">Mínimo de 10 caracteres, com letras e números.</p></div>
       <Button type="submit" disabled={busy} className="rounded-full" data-testid="security-password-submit">Alterar senha</Button>
     </form>
@@ -59,7 +60,7 @@ const MfaCard = () => {
       <p className="text-sm text-muted-foreground">Obrigatória para ações administrativas (equipe, funil, assinatura). Use Google Authenticator, 1Password ou similar.</p>
       {user?.mfa_enabled ? (
         <div className="grid gap-3 md:grid-cols-3">
-          <Input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} data-testid="mfa-disable-password" />
+          <PasswordInput placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} data-testid="mfa-disable-password" />
           <Input inputMode="numeric" maxLength={6} placeholder="Código de 6 dígitos" value={code} onChange={(e) => setCode(e.target.value)} data-testid="mfa-disable-code" />
           <Button variant="outline" onClick={disable} data-testid="mfa-disable-button">Desativar MFA</Button>
         </div>

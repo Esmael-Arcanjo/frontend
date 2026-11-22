@@ -5,14 +5,32 @@ export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const readCookie = (name: string) =>
   document.cookie.split("; ").find((c) => c.startsWith(`${name}=`))?.split("=")[1] || "";
 
-export const hasSession = () => Boolean(readCookie("csrf_token"));
+const SESSION_FLAG = "leamse_session";
+export const hasSession = () => Boolean(readCookie("csrf_token")) || localStorage.getItem(SESSION_FLAG) === "1";
+export const markSession = (on: boolean) => {
+  if (on) localStorage.setItem(SESSION_FLAG, "1"); else localStorage.removeItem(SESSION_FLAG);
+  csrfMemo = "";
+};
+
+let csrfMemo = "";
+const SAFE = ["get", "head", "options"];
+const getCsrf = async () => {
+  const fromCookie = readCookie("csrf_token");
+  if (fromCookie) return fromCookie;
+  if (!csrfMemo && hasSession()) {
+    const { data } = await axios.get(`${BACKEND_URL}/api/v1/auth/csrf`, { withCredentials: true });
+    csrfMemo = data.csrf_token || "";
+  }
+  return csrfMemo;
+};
 
 let refreshing: Promise<unknown> | null = null;
 const NO_REFRESH = ["/api/v1/auth/refresh", "/api/v1/auth/login", "/api/v1/auth/login/mfa", "/api/v1/auth/register"];
 
 const attach = (instance: AxiosInstance) => {
-  instance.interceptors.request.use((config) => {
-    const csrf = readCookie("csrf_token");
+  instance.interceptors.request.use(async (config) => {
+    if (SAFE.includes((config.method || "get").toLowerCase())) return config;
+    const csrf = await getCsrf();
     if (csrf) config.headers.set("X-CSRF-Token", csrf);
     return config;
   });
@@ -22,7 +40,8 @@ const attach = (instance: AxiosInstance) => {
       throw error;
     }
     original._retry = true;
-    refreshing = refreshing || api.post("/api/v1/auth/refresh").finally(() => { refreshing = null; });
+    refreshing = refreshing || api.post("/api/v1/auth/refresh").then(() => { csrfMemo = ""; })
+      .catch((e) => { markSession(false); throw e; }).finally(() => { refreshing = null; });
     await refreshing;
     return instance(original);
   });

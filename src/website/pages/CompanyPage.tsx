@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import { InfoPageLayout } from "../layouts/InfoPageLayout";
 
 const SECTIONS = [
@@ -12,9 +13,13 @@ const SECTIONS = [
   { id: "sobre", label: "Sobre a LEAMSE", body: [
     "A LEAMSE desenvolve produtos SaaS independentes, cada um com assinatura, endereço e painel próprios." ] },
   { id: "contato", label: "Contato", body: [
-    "Fale com o nosso time pelo e-mail suporte@leamse.com." ] },
+    "Fale com o nosso time pela página Entrar em contato ou pelo e-mail suporte@leamse.com." ] },
+  { id: "sobre-nos", label: "Quem somos", body: [
+    "Somos uma empresa de software que acredita em ferramentas simples, seguras e sob medida.",
+    "Cada solução nasce separada, para que sua empresa cresça sem pagar pelo que não usa." ] },
 ];
 
 export default function CompanyPage() {
-  return <InfoPageLayout title="Para empresas" subtitle="Soluções para negócios de todos os tamanhos e profissionais." sections={SECTIONS} testId="company-page" />;
+  const { topic } = useParams();
+  return <InfoPageLayout title="Para empresas" subtitle="Soluções para negócios de todos os tamanhos e profissionais." sections={SECTIONS} testId="company-page" basePath="/empresas" activeId={topic} />;
 }

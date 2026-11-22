@@ -21,7 +21,7 @@ export default function PageEditorPage() {
   const api = useBioApi();
   const { data, error, reload, setData } = useLoad(useCallback(async () => {
     const [page, meta, links, theme] = await Promise.all([api.page(), api.meta(), api.links(), api.theme()]);
-    return { page: page as BioPage, networks: meta.networks as Record<string, string>, links: links as BioLink[], theme: theme as Theme };
+    return { page: page as BioPage, networks: meta.networks as Record<string, string>, freeLimit: meta.is_free ? (meta.free_social_limit as number) : undefined, links: links as BioLink[], theme: theme as Theme };
   }, [api]));
   const [form, setForm] = useState({ profile_type: "person", display_name: "", title: "", description: "", location: "", show_map: true });
   const [socials, setSocials] = useState<SocialDraft[]>([]);
@@ -89,7 +89,7 @@ export default function PageEditorPage() {
                 <Input id="bio-loc" placeholder="Cidade, estado ou endereço" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} data-testid="bio-location-input" /></div>
               <label className="flex items-center gap-2 self-end pb-2 text-sm"><Switch checked={form.show_map} onCheckedChange={(v: boolean) => setForm({ ...form, show_map: v })} data-testid="bio-map-switch" /> Abrir no mapa ao clicar</label>
             </div>
-            <div className="space-y-2"><Label>Redes sociais (exibidas só como ícones)</Label><SocialsEditor networks={data.networks} items={socials} onChange={setSocials} /></div>
+            <div className="space-y-2"><Label>Redes sociais (exibidas só como ícones)</Label><SocialsEditor networks={data.networks} items={socials} onChange={setSocials} max={data.freeLimit} /></div>
             <Button type="submit" disabled={busy} className="rounded-full" data-testid="bio-profile-save">{busy ? "Salvando..." : "Salvar página"}</Button>
           </form>
         </div>

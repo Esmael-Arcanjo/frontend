@@ -4,6 +4,7 @@ import { useAuth } from "@/shared/auth/AuthContext";
 import { UserMenu } from "@/shared/components/UserMenu";
 import { useCrmContext } from "../hooks/useCrmContext";
 import { BASE_PATH } from "../utils/constants";
+import { NotificationBell } from "./NotificationBell";
 
 export const CrmHeader = ({ onMenu }: { onMenu: () => void }) => {
   const { user, logout } = useAuth();
@@ -19,6 +20,7 @@ export const CrmHeader = ({ onMenu }: { onMenu: () => void }) => {
         <span className="shrink-0 rounded-md px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest text-white" style={{ background: "#0F766E" }} data-testid="header-segment">{ctx.segment_name}</span>
         <span className="min-w-0 max-w-[40vw] truncate text-xs text-muted-foreground sm:text-sm" data-testid="header-organization"><span className="hidden sm:inline">EMPRESA: </span><b className="text-foreground">{ctx.organization_name}</b></span>
       </div>
+      <NotificationBell />
       <UserMenu basePath={BASE_PATH} name={user?.name || ""} email={user?.email || ""} organization={ctx.organization_name} onLogout={onLogout} />
     </header>
   );

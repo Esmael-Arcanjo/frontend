@@ -6,11 +6,12 @@ import { SocialIcon } from "./SocialIcon";
 export type SocialDraft = { network: string; value: string };
 const PLACEHOLDER: Record<string, string> = { whatsapp: "5511999990000", email: "contato@empresa.com", website: "https://seusite.com" };
 
-type Props = { networks: Record<string, string>; items: SocialDraft[]; onChange: (items: SocialDraft[]) => void };
+type Props = { networks: Record<string, string>; items: SocialDraft[]; onChange: (items: SocialDraft[]) => void; max?: number };
 
-export const SocialsEditor = ({ networks, items, onChange }: Props) => {
+export const SocialsEditor = ({ networks, items, onChange, max }: Props) => {
   const used = new Set(items.map((i) => i.network));
-  const free = Object.keys(networks).filter((n) => !used.has(n));
+  const limited = max !== undefined && items.length >= max;
+  const free = limited ? [] : Object.keys(networks).filter((n) => !used.has(n));
   const update = (i: number, patch: Partial<SocialDraft>) => onChange(items.map((s, j) => (j === i ? { ...s, ...patch } : s)));
   return (
     <div className="space-y-3" data-testid="bio-socials-editor">
@@ -21,6 +22,7 @@ export const SocialsEditor = ({ networks, items, onChange }: Props) => {
           <Button type="button" variant="ghost" size="icon" onClick={() => onChange(items.filter((_, j) => j !== i))} data-testid={`bio-social-remove-${s.network}`}><Trash2 className="h-4 w-4 text-destructive" /></Button>
         </div>
       ))}
+      {limited && <p className="rounded-lg bg-secondary px-3 py-2 text-xs" data-testid="bio-socials-limit">Plano Grátis: até {max} redes sociais. <a href="/contratar/link-bio" className="font-semibold underline">Faça upgrade</a> para adicionar todas.</p>}
       {free.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {free.map((n) => (

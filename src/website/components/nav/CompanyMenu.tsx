@@ -9,7 +9,7 @@ export const COMPANY_TOPICS = [
   { id: "contato", label: "Contato", hint: "Fale com nosso time", icon: MessageCircle },
 ];
 
-const item = (t: (typeof COMPANY_TOPICS)[number]) => ({ ...t, to: `/empresas#${t.id}` });
+const item = (t: (typeof COMPANY_TOPICS)[number]) => ({ ...t, to: `/empresas/${t.id}` });
 
 export const CompanyMenu = () => (
   <NavDropdown label="Empresas" testId="nav-company" columns={[

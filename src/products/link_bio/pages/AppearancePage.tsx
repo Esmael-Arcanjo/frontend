@@ -15,7 +15,7 @@ export default function AppearancePage() {
   const api = useBioApi();
   const { data, error, reload } = useLoad(useCallback(async () => {
     const [meta, theme, page, links] = await Promise.all([api.meta(), api.theme(), api.page(), api.links()]);
-    return { presets: meta.presets as Record<string, Preset>, theme: theme as Theme, page: page as BioPage, links: links as BioLink[] };
+    return { presets: meta.presets as Record<string, Preset>, isFree: Boolean(meta.is_free), theme: theme as Theme, page: page as BioPage, links: links as BioLink[] };
   }, [api]));
   const [theme, setTheme] = useState({ preset: "grafite", accent: "#111827", button_style: "rounded" });
   const [busy, setBusy] = useState(false);
@@ -29,7 +29,8 @@ export default function AppearancePage() {
 
   return (
     <div className="space-y-6" data-testid="bio-appearance-page">
-      <PageTitle title="Aparência" subtitle="Tema, cor de destaque e formato dos botões." actions={<Button onClick={save} disabled={busy} className="rounded-full" data-testid="bio-theme-save">{busy ? "Salvando..." : "Salvar aparência"}</Button>} />
+      <PageTitle title="Aparência" subtitle="Tema, cor de destaque e formato dos botões." actions={<Button onClick={save} disabled={busy || data.isFree} className="rounded-full" data-testid="bio-theme-save">{busy ? "Salvando..." : "Salvar aparência"}</Button>} />
+      {data.isFree && <p className="rounded-xl bg-secondary px-4 py-3 text-sm" data-testid="bio-theme-locked">No plano Grátis sua página usa uma aparência padrão. <a href="/contratar/link-bio" className="font-semibold underline">Faça upgrade</a> para escolher temas, cores e botões.</p>}
       <div className="grid gap-6 xl:grid-cols-[1fr_380px]">
         <div className="space-y-6 rounded-xl border border-border bg-card p-6">
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3">

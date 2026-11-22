@@ -27,7 +27,10 @@ export default function AccountPage() {
             <h1 className="font-display text-3xl font-extrabold">Olá, {user.name.split(" ")[0]}!</h1>
             <p className="mt-1 text-sm text-muted-foreground">Seus produtos ativos. Cada um abre em seu próprio painel.</p>
           </div>
-          <Button variant="outline" className="rounded-full" onClick={async () => { await logout(); navigate("/"); }} data-testid="account-logout">Sair</Button>
+          <div className="flex gap-2">
+            {user.is_admin && <Button asChild className="rounded-full"><Link to="/admin" data-testid="account-admin">Painel admin</Link></Button>}
+            <Button variant="outline" className="rounded-full" onClick={async () => { await logout(); navigate("/"); }} data-testid="account-logout">Sair</Button>
+          </div>
         </div>
         {!user.email_verified && (
           <p className="flex items-center gap-2 rounded-xl border border-warning/40 bg-warning/10 p-4 text-sm" data-testid="account-unverified"><MailWarning className="h-4 w-4" /> Confirme seu e-mail pelo link enviado para {user.email}.</p>

@@ -33,7 +33,7 @@ export default function DashboardPage() {
           <Button asChild className="rounded-full"><a href={url} target="_blank" rel="noopener noreferrer" data-testid="bio-open-public"><ExternalLink className="mr-1 h-4 w-4" /> Abrir</a></Button>
         </div>
       </div>
-      <BioQrCard url={url} handle={data.handle} />
+      <BioQrCard url={url} handle={data.handle} locked={data.is_free} />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Visitas (7d)" value={data.views_7d} icon={Eye} testId="bio-kpi-views" />
         <StatCard label="Cliques (7d)" value={data.clicks_7d} icon={MousePointerClick} testId="bio-kpi-clicks" />

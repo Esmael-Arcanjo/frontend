@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/shared/components/PasswordInput";
 import { Label } from "@/components/ui/label";
 import { api, errMsg } from "@/shared/api/client";
 import { AuthCard } from "../layouts/PublicLayout";
@@ -28,7 +29,7 @@ export default function ResetPasswordPage() {
       ) : (
         <form onSubmit={submit} className="space-y-4" data-testid="reset-form">
           <div className="space-y-2"><Label htmlFor="n-pass">Nova senha</Label>
-            <Input id="n-pass" type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} data-testid="reset-password" /></div>
+            <PasswordInput id="n-pass" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} data-testid="reset-password" /></div>
           <Button type="submit" disabled={busy} className="w-full rounded-full" data-testid="reset-submit">Salvar senha</Button>
         </form>
       )}

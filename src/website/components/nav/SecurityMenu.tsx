@@ -8,7 +8,7 @@ export const SECURITY_TOPICS = [
   { id: "privacidade", label: "Privacidade e auditoria", hint: "Registros de operações e retenção", icon: FileSearch },
 ];
 
-const item = (t: (typeof SECURITY_TOPICS)[number]) => ({ ...t, to: `/seguranca#${t.id}` });
+const item = (t: (typeof SECURITY_TOPICS)[number]) => ({ ...t, to: `/seguranca/${t.id}` });
 
 export const SecurityMenu = () => (
   <NavDropdown label="Segurança" testId="nav-security" columns={[

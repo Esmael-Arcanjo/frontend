@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
-import { ArrowRightLeft, Pencil, Plus, Search, Trash2 } from "lucide-react";
+import { ArrowRightLeft, EyeOff, Globe, Pencil, Plus, Search, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { errMsg } from "@/shared/api/client";
@@ -15,16 +15,23 @@ import { NativeSelect } from "../components/FormField";
 import type { Lead, SegmentConfig } from "../types/crm";
 import { canDelete, canWrite, LEAD_STATUS, money } from "../utils/format";
 
+const SOURCES: Record<string, string> = { manual: "Manual", site: "Site", whatsapp: "WhatsApp", instagram: "Instagram" };
+const SOURCE_STYLE: Record<string, string> = { site: "bg-secondary text-secondary-foreground", whatsapp: "bg-primary/15 text-primary", instagram: "bg-accent/15 text-accent", manual: "bg-muted" };
+
 export default function LeadsPage() {
   const api = useCrmApi();
   const { role } = useCrmContext();
   const [q, setQ] = useState("");
   const [status, setStatus] = useState("");
+  const [source, setSource] = useState("");
   const [editing, setEditing] = useState<Lead | null>(null);
   const [formOpen, setFormOpen] = useState(false);
   const [toDelete, setToDelete] = useState<Lead | null>(null);
   const config = useAsyncData<SegmentConfig>(useCallback(() => api.segmentConfig(), [api]));
-  const leads = useAsyncData<Lead[]>(useCallback(() => api.list<Lead>("leads", { q: q || undefined, status: status || undefined }), [api, q, status]));
+  const leads = useAsyncData<Lead[]>(useCallback(() => api.list<Lead>("leads", { q: q || undefined, status: status || undefined, source: source || undefined }), [api, q, status, source]));
+  const togglePublish = async (lead: Lead) => {
+    try { await api.publishLead(lead.id, !lead.published); toast.success(lead.published ? "Anúncio removido do site" : "Anúncio publicado no site"); leads.reload(); } catch (e) { toast.error(errMsg(e)); }
+  };
 
   const convert = async (lead: Lead) => {
     try { await api.convertLead(lead.id); toast.success("Lead convertido em contato e oportunidade"); leads.reload(); } catch (e) { toast.error(errMsg(e)); }
@@ -45,6 +52,9 @@ export default function LeadsPage() {
         <NativeSelect className="sm:w-56" value={status} onChange={(e) => setStatus(e.target.value)} data-testid="lead-status-filter">
           <option value="">Todos os status</option>{Object.entries(LEAD_STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
         </NativeSelect>
+        <NativeSelect className="sm:w-44" value={source} onChange={(e) => setSource(e.target.value)} data-testid="lead-source-filter">
+          <option value="">Todas as origens</option>{Object.entries(SOURCES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+        </NativeSelect>
       </div>
       {leads.error ? <ErrorState message={leads.error} onRetry={leads.reload} /> : leads.loading && !leads.data ? <LoadingState /> : !leads.data?.length ? (
         <EmptyState title="Nenhum lead encontrado" description="Cadastre seu primeiro lead para iniciar o funil." />
@@ -52,18 +62,19 @@ export default function LeadsPage() {
         <div className="w-full overflow-x-auto rounded-xl border border-border bg-card">
           <table className="w-full min-w-[760px] text-sm" data-testid="leads-table">
             <thead className="border-b border-border bg-muted/50 text-left text-xs uppercase tracking-widest text-muted-foreground">
-              <tr><th className="p-4">Nome</th><th className="p-4">Empresa</th><th className="p-4">Status</th><th className="p-4">Valor</th><th className="p-4">Dados do segmento</th><th className="p-4 text-right">Ações</th></tr>
+              <tr><th className="p-4">Nome</th><th className="p-4">Origem</th><th className="p-4">Status</th><th className="p-4">Valor</th><th className="p-4">Dados</th><th className="p-4 text-right">Ações</th></tr>
             </thead>
             <tbody className="divide-y divide-border">
               {leads.data.map((l) => (
                 <tr key={l.id} className="transition-colors hover:bg-muted/30" data-testid={`lead-row-${l.id}`}>
                   <td className="p-4"><p className="font-semibold">{l.name}</p><p className="text-xs text-muted-foreground">{l.email || l.phone || "—"}</p></td>
-                  <td className="p-4">{l.company || "—"}</td>
+                  <td className="p-4"><span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${SOURCE_STYLE[l.source || "manual"] || "bg-muted"}`} data-testid={`lead-source-${l.id}`}>{SOURCES[l.source || "manual"] || l.source}</span>{l.intent && l.intent !== "contato" && <p className="mt-1 text-xs text-muted-foreground">{l.intent === "anunciar" ? "Quer anunciar" : "Quer comprar"}</p>}</td>
                   <td className="p-4"><span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-semibold">{LEAD_STATUS[l.status]}</span></td>
                   <td className="p-4 font-mono">{money(l.value_cents)}</td>
-                  <td className="p-4 text-xs text-muted-foreground">{Object.entries(l.custom_fields).map(([k, v]) => `${fieldLabel(k)}: ${v}`).join(" · ") || "—"}</td>
+                  <td className="p-4 text-xs text-muted-foreground">{[l.wants, l.city, l.price, ...Object.entries(l.custom_fields).map(([k, v]) => `${fieldLabel(k)}: ${v}`)].filter(Boolean).join(" · ") || l.company || "—"}</td>
                   <td className="p-4">
                     <div className="flex justify-end gap-1">
+                      {canWrite(role) && l.intent === "anunciar" && <Button variant="ghost" size="icon" title={l.published ? "Tirar do site" : "Publicar no site"} onClick={() => togglePublish(l)} data-testid={`lead-publish-${l.id}`}>{l.published ? <EyeOff className="h-4 w-4" /> : <Globe className="h-4 w-4 text-primary" />}</Button>}
                       {canWrite(role) && l.status !== "converted" && <>
                         <Button variant="ghost" size="icon" title="Converter" onClick={() => convert(l)} data-testid={`lead-convert-${l.id}`}><ArrowRightLeft className="h-4 w-4" /></Button>
                         <Button variant="ghost" size="icon" title="Editar" onClick={() => { setEditing(l); setFormOpen(true); }} data-testid={`lead-edit-${l.id}`}><Pencil className="h-4 w-4" /></Button>

@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import { InfoPageLayout } from "../layouts/InfoPageLayout";
 
 const SECTIONS = [
@@ -16,5 +17,6 @@ const SECTIONS = [
 ];
 
 export default function SecurityPage() {
-  return <InfoPageLayout title="Segurança" subtitle="Segurança aplicada desde a fundação em todos os produtos LEAMSE." sections={SECTIONS} testId="security-page" />;
+  const { topic } = useParams();
+  return <InfoPageLayout title="Segurança" subtitle="Segurança aplicada desde a fundação em todos os produtos LEAMSE." sections={SECTIONS} testId="security-page" basePath="/seguranca" activeId={topic} />;
 }
