@@ -24,7 +24,6 @@ export default function CheckoutPage() {
   const [plan, setPlan] = useState(params.get("plano") || "");
   const [org, setOrg] = useState({ name: "", document: "", country: "BR" });
   const [busy, setBusy] = useState(false);
-  const [method, setMethod] = useState<"card" | "pix">("card");
   const navigate = useNavigate();
   const [current, setCurrent] = useState<{ organization_id: string; organization_name: string; segment: string; plan_key: string } | null>(null);
 
@@ -54,7 +53,7 @@ export default function CheckoutPage() {
         product_key: product.key, plan_key: plan, segment,
         ...(current ? { organization_id: current.organization_id }
           : { organization: { name: org.name.trim(), document: org.document.trim() || null, country: org.country } }),
-        origin_url: window.location.origin, payment_method: method,
+        origin_url: window.location.origin,
       } as Parameters<typeof startCheckout>[0]) as { checkout_url: string | null; activated?: boolean; changed?: boolean; slug?: string };
       if (res.activated) { toast.success(res.changed ? "Plano alterado!" : "Plano ativado!"); navigate(`/${res.slug}`); return; }
       window.location.href = res.checkout_url!;
@@ -113,17 +112,11 @@ export default function CheckoutPage() {
             <div className="flex justify-between"><dt className="text-muted-foreground">Empresa</dt><dd className="truncate pl-4">{org.name || "—"}</dd></div>
           </dl>
           <p className="border-t border-border pt-4 font-display text-2xl font-extrabold" data-testid="checkout-total">{selectedPlan ? `${formatPrice(selectedPlan.price_cents, selectedPlan.currency)}${selectedPlan.interval === "year" ? "/ano" : "/mês"}` : "—"}</p>
-          {!free && (
-            <div className="grid grid-cols-2 gap-2" data-testid="checkout-payment-method">
-              {([["card", "Cartão"], ["pix", "Pix"]] as const).map(([k, label]) => (
-                <OptionTile key={k} active={method === k} onClick={() => setMethod(k)} testId={`checkout-method-${k}`}><span className="text-sm font-semibold">{label}</span></OptionTile>
-              ))}
-            </div>
-          )}
+          
           <Button className="w-full rounded-full" size="lg" disabled={!ready || busy} onClick={pay} data-testid="checkout-pay-button">
-            <Lock className="mr-2 h-4 w-4" /> {busy ? "Aguarde..." : free ? "Ativar plano grátis" : method === "pix" ? "Pagar com Pix" : "Pagar com cartão"}
+            <Lock className="mr-2 h-4 w-4" /> {busy ? "Aguarde..." : free ? "Ativar plano grátis" : "Ir para o pagamento"}
           </Button>
-          <p className="text-xs text-muted-foreground">{method === "pix" && !free ? "Pix é pago por período (mês ou ano) e não renova sozinho; você renova quando vencer." : "Pagamento processado pela Stripe em página segura. A assinatura só é ativada após confirmação do pagamento no servidor."}</p>
+          <p className="text-xs text-muted-foreground">Pagamento processado pela Stripe em página segura. A assinatura só é ativada após confirmação do pagamento no servidor.</p>
         </aside>
       </div>
     </PublicLayout>
