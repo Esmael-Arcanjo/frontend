@@ -26,7 +26,7 @@ export const PublicHeader = () => {
           ) : (
             <>
               <Button asChild variant="ghost" size="sm"><Link to="/entrar" data-testid="nav-login">Entrar</Link></Button>
-              <Button asChild size="sm" className="rounded-full bg-accent text-accent-foreground hover:bg-accent/90"><Link to="/contato" data-testid="nav-contact">Entrar em contato</Link></Button>
+              <Button asChild size="sm" className="rounded-full bg-accent text-accent-foreground hover:bg-accent/90"><Link to="/precos" data-testid="nav-contact">Planos</Link></Button>
             </>
           )}
         </div>
