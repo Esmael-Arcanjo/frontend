@@ -40,7 +40,7 @@ export const BioView = ({ bio, onLinkClick, onSocialClick, compact }: Props) => 
         {bio.location && (
           bio.show_map ? (
             <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(bio.location)}`} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-xs underline-offset-4 opacity-80 hover:underline" data-testid="bio-location"><MapPin className="h-3.5 w-3.5" /> {bio.location}</a>
-          ) : <p className="mt-3 inline-flex items-center gap-1 text-xs opacity-80" data-testid="bio-location"><MapPin className="h-3.5 w-3.5" /> {bio.location}</p>
+          ) : <p className="mt-3 inline-flex items-center gap-1 text-xs opacity-80" data-testid="Publicadabio-location"><MapPin className="h-3.5 w-3.5" /> {bio.location}</p>
         )}
         <div className="mt-7 w-full space-y-3" data-testid="bio-links">
           {bio.links.map((l) => (
