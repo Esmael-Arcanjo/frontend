@@ -6,35 +6,35 @@
 
 @layer base {
   :root {
-    --background: 270 33% 98%;
-    --foreground: 200 30% 9%;
-    --surface: 266 45% 95%;
-    --sidebar: 0 0% 100%;
-    --card: 0 0% 100%;
-    --card-foreground: 200 30% 9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 200 30% 9%;
-    --primary: 163 93% 22%;
+    --background: 270 20% 98%;
+    --foreground: 240 12% 12%;
+    --surface: 270 14% 94%;
+    --sidebar: 270 14% 94%;
+    --card: 270 14% 97%;
+    --card-foreground: 240 12% 12%;
+    --popover: 270 14% 97%;
+    --popover-foreground: 240 12% 12%;
+    --primary: 230 70% 46%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 266 40% 86%;
-    --secondary-foreground: 200 30% 10%;
-    --muted: 266 30% 93%;
-    --muted-foreground: 220 10% 38%;
-    --accent: 228 100% 56%;
+    --secondary: 270 14% 91%;
+    --secondary-foreground: 240 12% 12%;
+    --muted: 270 14% 93%;
+    --muted-foreground: 240 7% 42%;
+    --accent: 230 70% 46%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 48%;
     --destructive-foreground: 0 0% 100%;
     --success: 152 60% 36%;
     --warning: 38 92% 50%;
-    --border: 266 22% 86%;
-    --input: 266 22% 84%;
-    --ring: 228 100% 56%;
+    --border: 270 10% 86%;
+    --input: 270 10% 84%;
+    --ring: 230 70% 46%;
     --radius: 0.75rem;
-    --chart-1: 163 93% 22%;
-    --chart-2: 266 40% 70%;
-    --chart-3: 228 100% 56%;
-    --chart-4: 0 72% 55%;
-    --chart-5: 200 70% 45%;
+    --chart-1: 230 70% 46%;
+    --chart-2: 230 70% 46%;
+    --chart-3: 270 14% 75%;
+    --chart-4: 240 12% 30%;
+    --chart-5: 190 70% 45%;
   }
   * { @apply border-border; }
   html, body, #root { width: 100%; min-height: 100vh; }
@@ -52,3 +52,8 @@
 }
 
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+.public-footer-night {
+  background: #050505;
+}
+

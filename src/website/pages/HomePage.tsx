@@ -4,7 +4,7 @@ import { InfoSections } from "../components/HomeInfoSections";
 
 const Hero = () => (
   <section
-    className="w-full bg-[#5b21b6] text-white"
+    className="w-full border-b border-border/30 bg-background text-foreground"
     data-testid="hero-section"
   >
     <div className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
@@ -13,13 +13,13 @@ const Hero = () => (
         style={{ animationDelay: "80ms" }}
       >
        O seu negócio cresce mais com {" "}
-        <span className="text-secondary">
+        <span className="text-primary">
           Leamse | Soluções em Tecnologia
         </span>
       </h1>
 
       <p
-        className="fade-up mt-6 max-w-xl text-base text-white/80 md:text-lg"
+        className="fade-up mt-6 max-w-xl text-base text-muted-foreground md:text-lg"
         style={{ animationDelay: "160ms" }}
       >
        Inovação e excelência em tecnologia. Transforme o seu negócio com nossas soluções digitais.

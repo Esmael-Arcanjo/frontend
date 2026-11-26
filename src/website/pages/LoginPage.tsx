@@ -25,10 +25,10 @@ export default function LoginPage() {
     try {
       if (mfaToken) {
         await loginMfa(mfaToken, code);
-        navigate(next);
+        navigate("/minha-conta");
       } else {
         const r = await login(form.email, form.password);
-        if (r.mfa_required) setMfaToken(r.mfa_token!); else navigate(next);
+        if (r.mfa_required) setMfaToken(r.mfa_token!); else navigate("/minha-conta");
       }
     } catch (err) {
       toast.error(errMsg(err));
@@ -38,15 +38,15 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="grain min-h-screen w-full bg-surface md:h-screen md:overflow-hidden" data-testid="auth-layout">
-      <div className="grid min-h-screen w-full bg-card md:h-screen md:grid-cols-2">
-        <aside className="flex flex-col items-center justify-center bg-white px-8 py-10 text-center md:px-12">
+    <main className="grain fixed inset-0 h-dvh w-full touch-none overflow-hidden bg-surface" data-testid="auth-layout">
+      <div className="grid h-dvh w-full grid-rows-[38dvh_62dvh] overflow-hidden bg-card md:grid-cols-2 md:grid-rows-1">
+        <aside className="flex min-h-0 flex-col items-center justify-center bg-white px-8 py-4 text-center md:px-12 md:py-10">
           <Link to="/" aria-label="LEAMSE - página inicial" className="flex justify-center">
-            <img src="/images/Logotipofavi.png" alt="Logo LEAMSE" className="h-52 w-52 object-contain sm:h-64 sm:w-64" />
+            <img src="/images/Logotipofavi.png" alt="Logo LEAMSE" className="h-32 w-32 object-contain sm:h-48 sm:w-48 md:h-52 md:w-52 lg:h-64 lg:w-64" />
           </Link>
-          <h2 className="mt-8 font-display text-2xl font-extrabold tracking-tight">Bem-vindo à LEAMSE</h2>
+          <h2 className="mt-2 font-display text-xl font-extrabold tracking-tight md:mt-8 md:text-2xl">Bem-vindo à LEAMSE</h2>
         </aside>
-        <section className="flex items-center px-6 py-8 sm:px-10 lg:px-14">
+        <section className="flex min-h-0 items-center overflow-hidden px-6 py-3 sm:px-10 md:py-8 lg:px-14">
           <div className="mx-auto w-full max-w-md md:my-auto">
             <h1 className="font-display text-2xl font-extrabold tracking-tight" data-testid="auth-title">{mfaToken ? "Verificação em dois fatores" : "Entrar"}</h1>
             <p className="mt-1 text-sm text-muted-foreground">{mfaToken ? "Digite o código do seu aplicativo autenticador." : "Acesse sua conta."}</p>

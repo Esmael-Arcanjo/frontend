@@ -25,7 +25,7 @@ type Item = { icon: typeof Layers; title: string; text: string };
 const Grid = ({ items, testId }: { items: Item[]; testId: string }) => (
   <div className="mt-10 grid gap-5 md:grid-cols-3" data-testid={testId}>
     {items.map((s) => (
-      <div key={s.title} className="rounded-2xl border border-border bg-card p-6 transition-transform hover:-translate-y-1">
+      <div key={s.title} className="rounded-2xl border border-border/30 bg-card p-6 transition-transform hover:-translate-y-1">
         <s.icon className="h-7 w-7 text-primary" strokeWidth={1.75} />
         <h3 className="mt-4 font-display text-lg font-bold">{s.title}</h3>
         <p className="mt-2 text-sm text-muted-foreground">{s.text}</p>
@@ -36,7 +36,7 @@ const Grid = ({ items, testId }: { items: Item[]; testId: string }) => (
 
 const Heading = ({ kicker, title, text }: { kicker: string; title: string; text?: string }) => (
   <div className="max-w-2xl">
-    <p className="text-xs font-bold uppercase tracking-widest text-accent">{kicker}</p>
+    <p className="text-xs font-bold uppercase tracking-widest text-primary">{kicker}</p>
     <h2 className="mt-2 font-display text-3xl font-extrabold sm:text-4xl">{title}</h2>
     {text && <p className="mt-3 text-sm text-muted-foreground md:text-base">{text}</p>}
   </div>
@@ -58,10 +58,10 @@ export const InfoSections = () => {
         <Heading kicker="Por que a LEAMSE" title="Tecnologia no ritmo da sua empresa" />
         <Grid items={VALUES} testId="home-values-grid" />
       </section>
-      <section className="w-full bg-[#5b21b6] text-white" data-testid="home-how">
+      <section className="w-full border-y border-border/30 bg-card text-foreground" data-testid="home-how">
         <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-2">
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-secondary">Como funciona</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary">Como funciona</p>
             <h2 className="mt-2 font-display text-3xl font-extrabold sm:text-4xl">Da escolha ao painel em poucos passos</h2>
             <ol className="mt-8 space-y-3">
               {STEPS.map((s, i) => <li key={s} className="flex items-center gap-4"><span className="grid h-8 w-8 place-items-center rounded-full bg-secondary font-mono text-xs text-secondary-foreground">{i + 1}</span><span className="text-sm font-medium">{s}</span></li>)}

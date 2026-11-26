@@ -9,7 +9,11 @@ const Group = ({ group, testId }: { group: MenuGroup; testId: string }) => (
   <div className="space-y-1">
     <p className="px-3 pb-1 pt-2 text-[11px] font-bold uppercase tracking-widest text-foreground/70">{group.title}</p>
     {group.items.map((item) => (
-      <DropdownMenuItem key={item.id} asChild>
+      <DropdownMenuItem
+        key={item.id}
+        asChild
+        className="focus:bg-muted focus:text-foreground data-[highlighted]:bg-muted data-[highlighted]:text-foreground"
+      >
         <Link to={item.to} className="flex cursor-pointer !items-start gap-3 rounded-lg px-3 py-2.5" data-testid={`${testId}-item-${item.id}`}>
           <item.icon className="mt-0.5 h-6 w-6 shrink-0 text-foreground" strokeWidth={1.75} />
           <span className="min-w-0">
@@ -27,7 +31,7 @@ const Group = ({ group, testId }: { group: MenuGroup; testId: string }) => (
 export const NavDropdown = ({ label, columns, testId }: { label: string; columns: MenuGroup[][]; testId: string }) => (
   <DropdownMenu modal={false}>
     <DropdownMenuTrigger asChild>
-      <button type="button" className="group inline-flex shrink-0 items-center gap-1 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground data-[state=open]:text-primary" data-testid={testId}>
+      <button type="button" className="group inline-flex shrink-0 items-center gap-1 rounded-full px-3 py-1.5 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground data-[state=open]:text-primary" data-testid={testId}>
         {label} <ChevronDown className="h-3.5 w-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
       </button>
     </DropdownMenuTrigger>

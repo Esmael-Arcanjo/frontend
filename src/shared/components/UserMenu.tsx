@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Bell, HelpCircle, LogOut, MonitorSmartphone, Settings, ShieldCheck, User } from "lucide-react";
+import { Bell, HelpCircle, MonitorSmartphone, Settings, ShieldCheck, User } from "lucide-react";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -15,9 +15,9 @@ const ITEMS = [
 
 const initials = (name: string) => name.split(" ").filter(Boolean).slice(0, 2).map((p) => p[0]).join("").toUpperCase();
 
-type Props = { basePath: string; name: string; email: string; organization: string; onLogout: () => void };
+type Props = { basePath: string; name: string; email: string; organization: string; onExit: () => void };
 
-export const UserMenu = ({ basePath, name, email, organization, onLogout }: Props) => (
+export const UserMenu = ({ basePath, name, email, organization, onExit }: Props) => (
   <div className="ml-auto flex min-w-0 shrink-0 items-center gap-3">
   <span className="max-w-[28vw] truncate text-sm font-semibold sm:max-w-[220px]" data-testid="header-greeting">Olá, {name.split(" ")[0]}!</span>
   <DropdownMenu>
@@ -41,8 +41,8 @@ export const UserMenu = ({ basePath, name, email, organization, onLogout }: Prop
         </DropdownMenuItem>
       ))}
       <DropdownMenuSeparator />
-      <DropdownMenuItem onSelect={onLogout} className="cursor-pointer text-destructive" data-testid="user-menu-logout">
-        <LogOut className="mr-2 h-4 w-4" /> Sair
+      <DropdownMenuItem onSelect={onExit} className="cursor-pointer" data-testid="user-menu-account">
+        <User className="mr-2 h-4 w-4" /> Voltar para minha conta
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>

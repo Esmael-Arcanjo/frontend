@@ -33,8 +33,8 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="grain min-h-screen w-full bg-surface md:h-screen md:overflow-hidden" data-testid="auth-layout">
-      <div className="grid min-h-screen w-full bg-card md:h-screen md:grid-cols-2">
+    <main className="grain h-auto min-h-screen w-full overflow-visible bg-surface md:h-dvh md:overflow-hidden" data-testid="auth-layout">
+      <div className="grid h-auto min-h-screen w-full bg-card md:h-dvh md:grid-cols-2">
         <aside className="flex flex-col items-center justify-center bg-white px-8 py-10 text-center md:px-12">
           <Link to="/" aria-label="LEAMSE - página inicial" className="flex justify-center">
             <img src="/images/Logotipofavi.png" alt="Logo LEAMSE" className="h-52 w-52 object-contain sm:h-64 sm:w-64" />
@@ -42,11 +42,16 @@ export default function RegisterPage() {
           <h2 className="mt-8 font-display text-2xl font-extrabold tracking-tight">Bem-vindo à LEAMSE</h2>
           <p className="mt-3 max-w-xs text-sm text-muted-foreground">Crie sua conta para contratar e acessar nossas soluções digitais.</p>
         </aside>
-        <section className="flex items-start px-6 py-8 sm:px-10 md:h-screen md:items-center md:overflow-y-auto lg:px-14">
+        <section className="flex items-start px-6 py-8 sm:px-10 md:h-dvh md:items-center md:overflow-hidden lg:px-14">
           <div className="mx-auto w-full max-w-md md:my-auto">
             <h1 className="font-display text-2xl font-extrabold tracking-tight" data-testid="auth-title">Criar conta</h1>
             <p className="mt-1 text-sm text-muted-foreground">Uma conta para contratar e acessar seus produtos.</p>
-            <form onSubmit={submit} className="mt-6 space-y-4" data-testid="register-form">
+            <div className="mt-3 flex justify-end">
+              <Button asChild variant="outline" size="sm" className="rounded-md" data-testid="register-to-login">
+                <Link to={`/entrar?next=${encodeURIComponent(next)}`}>Já tenho conta</Link>
+              </Button>
+            </div>
+            <form onSubmit={submit} className="mt-3 space-y-4" data-testid="register-form">
               <div className="space-y-2"><Label htmlFor="r-name">Nome completo</Label>
                 <Input id="r-name" autoComplete="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} data-testid="register-name" /></div>
               <div className="space-y-2"><Label htmlFor="r-email">E-mail</Label>
@@ -75,7 +80,6 @@ export default function RegisterPage() {
               </div>
               <Button type="submit" disabled={busy} className="w-full rounded-full" data-testid="register-submit">{busy ? "Criando..." : "Criar conta"}</Button>
             </form>
-            <p className="mt-5 text-center text-sm text-muted-foreground">Já tem conta? <Link to={`/entrar?next=${encodeURIComponent(next)}`} className="font-semibold text-foreground" data-testid="register-to-login">Entrar</Link></p>
           </div>
         </section>
       </div>
