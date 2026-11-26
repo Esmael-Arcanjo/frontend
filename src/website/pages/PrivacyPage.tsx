@@ -2,6 +2,10 @@ import { useParams } from "react-router-dom";
 import { InfoPageLayout } from "../layouts/InfoPageLayout";
 
 const SECTIONS = [
+  { id: "cookies", label: "Cookies", body: [
+    "Usamos cookies essenciais para manter sua sessão autenticada, proteger solicitações e registrar suas preferências de privacidade. Esses cookies são necessários para o funcionamento seguro da plataforma.",
+    "Quando autorizado, cookies opcionais podem ajudar a melhorar a experiência e o funcionamento dos serviços. Você pode aceitar todos ou usar apenas os cookies essenciais a partir do aviso de cookies. A preferência pode ser alterada a qualquer momento pelo botão Cookies no rodapé."
+  ] },
   { id: "dados", label: "Dados que utilizamos", body: [
     "Podemos tratar dados fornecidos no cadastro e no uso dos serviços, como nome, e-mail, CPF ou CNPJ, informações de perfil e conteúdo inserido pelo usuário.",
     "Também podemos tratar dados técnicos e registros de uso necessários para operar, proteger e dar suporte à plataforma. Dados de pagamento podem ser tratados por provedores de pagamento; não informe dados de cartão fora dos ambientes indicados para esse fim."

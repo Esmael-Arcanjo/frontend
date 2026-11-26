@@ -1,5 +1,5 @@
-import { lazy, Suspense } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/shared/auth/AuthContext";
 import { LoadingState } from "@/shared/components/States";
@@ -23,6 +23,7 @@ import PricingPage from "@/website/pages/PricingPage";
 import ContactPage from "@/website/pages/ContactPage";
 import TermsPage from "@/website/pages/TermsPage";
 import PrivacyPage from "@/website/pages/PrivacyPage";
+import { CookieConsent } from "@/website/components/CookieConsent";
 
 // Each product dashboard is an independent bundle (code-split) mounted on its own address.
 const CrmApp = lazy(() => import("@/products/crm/CrmApp"));
@@ -39,9 +40,58 @@ const AssinaturaDocsApp = lazy(() => import("@/products/assinatura_docs/Assinatu
 const RhApp = lazy(() => import("@/products/rh/RhApp"));
 const PublicBioPage = lazy(() => import("@/products/link_bio/public/PublicBioPage"));
 
+const PRODUCT_BASE_PATHS = [
+  "/crm",
+  "/erp",
+  "/email-api",
+  "/payments-api",
+  "/marketplace",
+  "/recebimento",
+  "/marketing",
+  "/chatbot",
+  "/link-bio",
+  "/assinatura-documentos",
+  "/rh",
+];
+
+const ProductFrameNavigation = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (window.parent === window) return;
+    const onMessage = (event: MessageEvent<unknown>) => {
+      if (event.origin !== window.location.origin || event.source !== window.parent) return;
+      const message = event.data;
+      if (typeof message !== "object" || message === null || !("type" in message) || !("path" in message)) return;
+      if (message.type !== "LEAMSE_ACCOUNT_NAVIGATE" || typeof message.path !== "string") return;
+      const target = new URL(message.path, window.location.origin);
+      if (target.origin !== window.location.origin) return;
+      if (!PRODUCT_BASE_PATHS.some((basePath) => target.pathname === basePath || target.pathname.startsWith(`${basePath}/`))) return;
+      const targetLocation = `${target.pathname}${target.search}${target.hash}`;
+      const currentLocation = `${location.pathname}${location.search}${location.hash}`;
+      if (targetLocation !== currentLocation) navigate(targetLocation);
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [location.hash, location.pathname, location.search, navigate]);
+
+  useEffect(() => {
+    if (window.parent !== window) {
+      window.parent.postMessage(
+        { type: "LEAMSE_PRODUCT_NAVIGATED", path: `${location.pathname}${location.search}${location.hash}` },
+        window.location.origin,
+      );
+    }
+  }, [location.hash, location.pathname, location.search]);
+
+  return null;
+};
+
 export default function App() {
   return (
     <BrowserRouter>
+      <ProductFrameNavigation />
       <AuthProvider>
         <Suspense fallback={<LoadingState />}>
           <Routes>
@@ -85,6 +135,7 @@ export default function App() {
           </Routes>
         </Suspense>
         <Toaster richColors position="top-right" />
+        <CookieConsent />
       </AuthProvider>
     </BrowserRouter>
   );

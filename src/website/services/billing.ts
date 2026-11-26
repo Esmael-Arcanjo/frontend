@@ -15,6 +15,6 @@ export const checkoutStatus = async (sessionId: string) =>
   };
 
 export const mySubscriptions = async () => (await api.get("/api/v1/subscriptions/mine")).data as {
-  subscriptions: { product_key: string; product_name: string; slug: string; organization_name: string; status: string; plan_key: string; role: string }[];
+  subscriptions: { product_key: string; product_name: string; slug: string; organization_id: string; organization_name: string; segment_name: string; status: string; plan_key: string; role: string }[];
   pending_count: number;
 };

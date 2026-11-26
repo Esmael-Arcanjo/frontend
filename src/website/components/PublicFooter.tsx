@@ -9,6 +9,17 @@ export const PublicFooter = () => (
         <nav className="flex gap-4" aria-label="Informações legais">
           <Link to="/termos" className="hover:underline">Termos de Uso</Link>
           <Link to="/privacidade" className="hover:underline">Privacidade</Link>
+          <button
+            type="button"
+            className="hover:underline"
+            onClick={() =>
+              window.dispatchEvent(
+                new CustomEvent("leamse-open-cookie-preferences"),
+              )
+            }
+          >
+            Cookies
+          </button>
         </nav>
         <p>© {new Date().getFullYear()} LEAMSE GESTAO.</p>
       </div>

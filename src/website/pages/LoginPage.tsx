@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,11 @@ import { errMsg } from "@/shared/api/client";
 import { useAuth } from "@/shared/auth/AuthContext";
 export const safeNext = (value: string | null) => (value && value.startsWith("/") && !value.startsWith("//") ? value : "/minha-conta");
 
+const postLoginPath = (user: { is_admin?: boolean } | null | undefined, next: string) =>
+  user?.is_admin ? "/admin" : next;
+
 export default function LoginPage() {
-  const { login, loginMfa } = useAuth();
+  const { user, loading, login, loginMfa } = useAuth();
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const next = safeNext(params.get("next"));
@@ -19,16 +22,22 @@ export default function LoginPage() {
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
 
+  useEffect(() => {
+    if (loading || !user) return;
+    navigate(user.is_admin ? "/admin" : next, { replace: true });
+  }, [loading, navigate, next, user]);
+
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     setBusy(true);
     try {
       if (mfaToken) {
-        await loginMfa(mfaToken, code);
-        navigate("/minha-conta");
+        const user = await loginMfa(mfaToken, code);
+        navigate(postLoginPath(user, next), { replace: true });
       } else {
         const r = await login(form.email, form.password);
-        if (r.mfa_required) setMfaToken(r.mfa_token!); else navigate("/minha-conta");
+        if (r.mfa_required) setMfaToken(r.mfa_token!);
+        else navigate(postLoginPath(r.user, next), { replace: true });
       }
     } catch (err) {
       toast.error(errMsg(err));

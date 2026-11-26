@@ -8,13 +8,13 @@ export type User = {
   document?: string | null; is_admin?: boolean;
 };
 
-type LoginResult = { mfa_required: boolean; mfa_token?: string };
+type LoginResult = { mfa_required: boolean; mfa_token?: string; user?: User };
 type AuthValue = {
   user: User | null; loading: boolean;
   setUser: (u: User | null) => void;
   reload: () => Promise<void>;
   login: (email: string, password: string) => Promise<LoginResult>;
-  loginMfa: (mfa_token: string, code: string) => Promise<void>;
+  loginMfa: (mfa_token: string, code: string) => Promise<User>;
   register: (name: string, email: string, password: string, document: string) => Promise<void>;
   logout: () => Promise<void>;
 };
@@ -50,6 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { data } = await api.post("/api/v1/auth/login/mfa", { mfa_token, code });
     markSession(true);
     setUser(data.user);
+    return data.user as User;
   };
   const register = async (name: string, email: string, password: string, document: string) => {
     const { data } = await api.post("/api/v1/auth/register", { name, email, password, document });

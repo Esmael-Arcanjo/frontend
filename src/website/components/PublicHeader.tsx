@@ -22,7 +22,11 @@ export const PublicHeader = () => {
         </nav>
         <div className="flex items-center gap-2">
           {user ? (
-            <Button asChild size="sm" className="rounded-md"><Link to="/minha-conta" data-testid="nav-account">Minha conta</Link></Button>
+            <Button asChild size="sm" className="rounded-md">
+              <Link to={user.is_admin ? "/admin" : "/minha-conta"} data-testid="nav-account">
+                {user.is_admin ? "Painel admin" : "Minha conta"}
+              </Link>
+            </Button>
           ) : (
             <>
               <Button asChild variant="ghost" size="sm" className="text-foreground hover:bg-black/5 hover:text-foreground"><Link to="/entrar" data-testid="nav-login">Entrar</Link></Button>
