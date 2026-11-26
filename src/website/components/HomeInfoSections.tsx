@@ -58,7 +58,7 @@ export const InfoSections = () => {
         <Heading kicker="Por que a LEAMSE" title="Tecnologia no ritmo da sua empresa" />
         <Grid items={VALUES} testId="home-values-grid" />
       </section>
-      <section className="w-full bg-primary text-primary-foreground" data-testid="home-how">
+      <section className="w-full bg-[#5b21b6] text-white" data-testid="home-how">
         <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-2">
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-secondary">Como funciona</p>

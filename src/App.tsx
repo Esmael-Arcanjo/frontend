@@ -21,6 +21,8 @@ import SecurityPage from "@/website/pages/SecurityPage";
 import CompanyPage from "@/website/pages/CompanyPage";
 import PricingPage from "@/website/pages/PricingPage";
 import ContactPage from "@/website/pages/ContactPage";
+import TermsPage from "@/website/pages/TermsPage";
+import PrivacyPage from "@/website/pages/PrivacyPage";
 
 // Each product dashboard is an independent bundle (code-split) mounted on its own address.
 const CrmApp = lazy(() => import("@/products/crm/CrmApp"));
@@ -75,6 +77,10 @@ export default function App() {
             <Route path="/empresas/:topic" element={<CompanyPage />} />
             <Route path="/contato" element={<ContactPage />} />
             <Route path="/precos" element={<PricingPage />} />
+            <Route path="/termos" element={<TermsPage />} />
+            <Route path="/termos/:topic" element={<TermsPage />} />
+            <Route path="/privacidade" element={<PrivacyPage />} />
+            <Route path="/privacidade/:topic" element={<PrivacyPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>

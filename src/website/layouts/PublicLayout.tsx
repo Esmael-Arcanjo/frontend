@@ -11,8 +11,8 @@ export const PublicLayout = ({ children }: { children: ReactNode }) => (
   </div>
 );
 
-export const AuthCard = ({ title, subtitle, children }: { title: string; subtitle?: string; children: ReactNode }) => (
-  <div className="grain flex min-h-screen overflow-hidden w-full flex-col items-center justify-center gap-8 bg-surface px-4 py-12" data-testid="auth-layout">
+export const AuthCard = ({ title, subtitle, children, fixedViewport = false }: { title: string; subtitle?: string; children: ReactNode; fixedViewport?: boolean }) => (
+  <div className={`grain flex ${fixedViewport ? "h-screen" : "min-h-screen"} overflow-hidden w-full flex-col items-center justify-center gap-8 bg-surface px-4 py-12`} data-testid="auth-layout">
     <Logo />
     <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-sm">
       <h1 className="font-display text-2xl font-extrabold tracking-tight" data-testid="auth-title">{title}</h1>
