@@ -14,7 +14,6 @@ export default function PaymentSuccessPage() {
   const sessionId = params.get("session_id") || "";
   const { user, loading } = useAuth();
   const [state, setState] = useState<"checking" | "active" | "failed" | "timeout">("checking");
-  const [slug, setSlug] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -24,7 +23,6 @@ export default function PaymentSuccessPage() {
     const poll = async () => {
       try {
         const s = await checkoutStatus(sessionId);
-        setSlug(s.slug);
         if (s.subscription_status === "active") return setState("active");
         if (["expired", "failed"].includes(s.payment_status)) return setState("failed");
       } catch (e) {
@@ -49,7 +47,7 @@ export default function PaymentSuccessPage() {
         {state === "active" && (
           <div className="space-y-4">
             <p className="flex items-center gap-2 text-sm text-success"><CheckCircle2 className="h-5 w-5" /> Pagamento confirmado e assinatura ativada.</p>
-            <Button asChild className="w-full rounded-full"><Link to={`/${slug}`} data-testid="payment-open-dashboard">Abrir meu painel</Link></Button>
+            <Button asChild className="w-full rounded-full"><Link to="/minha-conta" data-testid="payment-open-account">Ir para Minha conta</Link></Button>
           </div>
         )}
         {state === "failed" && <p className="flex items-center gap-2 text-sm text-destructive"><XCircle className="h-5 w-5" /> {error || "O pagamento não foi concluído."}</p>}

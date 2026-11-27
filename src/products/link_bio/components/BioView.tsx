@@ -13,10 +13,10 @@ export const BioView = ({ bio, onLinkClick, onSocialClick, compact }: Props) => 
   return (
     <div className={`flex w-full flex-col items-center px-5 ${compact ? "py-8" : "min-h-screen py-14"}`} style={{ background: t.background, color: t.text }} data-testid="bio-view">
       <div className="flex w-full max-w-md flex-col items-center text-center">
-        <div className="relative -mx-5 -mt-8 w-[calc(100%+2.5rem)] overflow-hidden sm:mx-0 sm:mt-0 sm:w-full sm:rounded-[2rem] sm:shadow-2xl" style={{ aspectRatio: "4 / 5", background: `linear-gradient(160deg, ${t.card}, ${t.accent})` }} data-testid="bio-hero-card">
-          {bio.avatar ? <img src={bio.avatar} alt={bio.display_name} className="absolute inset-0 h-full w-full object-cover" data-testid="bio-avatar" />
+        <div className={`relative -mx-5 ${compact ? "-mt-8" : "-mt-14"} w-[calc(100%+2.5rem)] overflow-hidden sm:mx-0 sm:w-full sm:rounded-[2rem] sm:shadow-2xl`} style={{ aspectRatio: "4 / 5", background: `linear-gradient(160deg, ${t.card}, ${t.accent})` }} data-testid="bio-hero-card">
+          {bio.avatar ? <img src={bio.avatar} alt={bio.display_name} className="absolute inset-0 h-full w-full scale-[1.05] object-cover" data-testid="bio-avatar" />
             : <span className="absolute inset-0 grid place-items-center pb-24 font-display text-6xl font-extrabold text-white/80">{initials(bio.display_name)}</span>}
-          <div className="absolute inset-x-0 bottom-0 h-3/4" style={{ background: `linear-gradient(to bottom, transparent, ${t.accent}e6 70%, ${t.accent})` }} />
+          <div className="absolute inset-x-0 bottom-0 h-3/4" style={{ background: `linear-gradient(to bottom, transparent, ${t.accent}c0 70%, ${t.accent}e6)` }} />
           <div className="absolute inset-x-0 bottom-0 flex flex-col items-center px-5 pb-6 text-white">
             <h1 className="font-display text-3xl font-extrabold leading-tight drop-shadow" data-testid="bio-name">{bio.display_name}</h1>
             {company ? (

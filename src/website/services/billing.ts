@@ -2,7 +2,7 @@ import { api } from "@/shared/api/client";
 
 export type CheckoutPayload = {
   product_key: string; plan_key: string; segment: string;
-  organization?: { name: string; document?: string | null; country: string };
+  organization?: { name: string; country: string };
   origin_url: string;
 };
 

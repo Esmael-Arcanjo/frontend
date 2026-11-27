@@ -22,7 +22,7 @@ export default function CheckoutPage() {
   const [error, setError] = useState("");
   const [segment, setSegment] = useState(params.get("segmento") || "");
   const [plan, setPlan] = useState(params.get("plano") || "");
-  const [org, setOrg] = useState({ name: "", document: "", country: "BR" });
+  const [org, setOrg] = useState({ name: "", country: "BR" });
   const [busy, setBusy] = useState(false);
   const navigate = useNavigate();
   const [current, setCurrent] = useState<{ organization_id: string; organization_name: string; segment: string; plan_key: string } | null>(null);
@@ -52,10 +52,10 @@ export default function CheckoutPage() {
       const res = await startCheckout({
         product_key: product.key, plan_key: plan, segment,
         ...(current ? { organization_id: current.organization_id }
-          : { organization: { name: org.name.trim(), document: org.document.trim() || null, country: org.country } }),
+          : { organization: { name: org.name.trim(), country: org.country } }),
         origin_url: window.location.origin,
-      } as Parameters<typeof startCheckout>[0]) as { checkout_url: string | null; activated?: boolean; changed?: boolean; slug?: string };
-      if (res.activated) { toast.success(res.changed ? "Plano alterado!" : "Plano ativado!"); navigate(`/${res.slug}`); return; }
+      } as Parameters<typeof startCheckout>[0]) as { checkout_url: string | null; activated?: boolean; changed?: boolean };
+      if (res.activated) { toast.success(res.changed ? "Plano alterado!" : "Plano ativado!"); navigate("/minha-conta"); return; }
       window.location.href = res.checkout_url!;
     } catch (e) {
       toast.error(errMsg(e));
@@ -85,11 +85,9 @@ export default function CheckoutPage() {
             </div>
           </CheckoutStep>
           {!current && <CheckoutStep n={3} title="Dados da organização" done={org.name.trim().length >= 2}>
-            <div className="grid gap-4 md:grid-cols-3">
-              <div className="space-y-2 md:col-span-2"><Label htmlFor="org-name">Nome da empresa</Label>
-                <Input id="org-name" value={org.name} onChange={(e) => setOrg({ ...org, name: e.target.value })} data-testid="checkout-org-name" /></div>
-              <div className="space-y-2"><Label htmlFor="org-doc">CNPJ/CPF (opcional)</Label>
-                <Input id="org-doc" value={org.document} onChange={(e) => setOrg({ ...org, document: e.target.value })} data-testid="checkout-org-document" /></div>
+            <div className="space-y-2">
+              <Label htmlFor="org-name">Nome da empresa</Label>
+              <Input id="org-name" value={org.name} onChange={(e) => setOrg({ ...org, name: e.target.value })} data-testid="checkout-org-name" />
             </div>
           </CheckoutStep>}
           <CheckoutStep n={current ? 2 : 4} title="Sua conta" done={!!user}>
@@ -112,7 +110,6 @@ export default function CheckoutPage() {
             <div className="flex justify-between"><dt className="text-muted-foreground">Empresa</dt><dd className="truncate pl-4">{org.name || "—"}</dd></div>
           </dl>
           <p className="border-t border-border pt-4 font-display text-2xl font-extrabold" data-testid="checkout-total">{selectedPlan ? `${formatPrice(selectedPlan.price_cents, selectedPlan.currency)}${selectedPlan.interval === "year" ? "/ano" : "/mês"}` : "—"}</p>
-          
           <Button className="w-full rounded-full" size="lg" disabled={!ready || busy} onClick={pay} data-testid="checkout-pay-button">
             <Lock className="mr-2 h-4 w-4" /> {busy ? "Aguarde..." : free ? "Ativar plano grátis" : "Ir para o pagamento"}
           </Button>
